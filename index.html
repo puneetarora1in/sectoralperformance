@@ -1,249 +1,259 @@
-import React, { useState } from 'react';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertOctagon, 
-  Zap, 
-  ShieldCheck, 
-  Activity, 
-  Search,
-  ArrowUpRight,
-  MinusCircle,
-  BarChart3,
-  Clock,
-  LayoutDashboard
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sectoral Pulse Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 p-4 md:p-8">
 
-const App = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const reportDate = "20 Feb 2026, 17:25";
-  
-  const sectors = [
-    { name: "Agriculture", status: "Neutral", trend: "Steady", commentary: "Inconsistent participation." },
-    { name: "Automobiles", status: "Leader", trend: "Up", commentary: "Solid structural dominance; broad-based participation." },
-    { name: "B. Mat*", status: "Avoid", trend: "Down", commentary: "Relative underperformance continues." },
-    { name: "Banks - PSU", status: "Leader", trend: "Accelerating", commentary: "Definitive market leader; massive surge." },
-    { name: "Banks - Pvt.", status: "Steady", trend: "Up", commentary: "Reliable trend but trailing PSU counterparts." },
-    { name: "Broking", status: "Weak", trend: "Down", commentary: "Struggling with weak internal breadth." },
-    { name: "Cement", status: "Fading", trend: "Decelerating", commentary: "Notable momentum deceleration." },
-    { name: "Chemicals", status: "Weak", trend: "Sideways", commentary: "Languishing in a low-conviction zone." },
-    { name: "Consumer Durables", status: "Neutral", trend: "Improving", commentary: "Finding footing; lacks breakout strength." },
-    { name: "Consumer Goods", status: "Neutral", trend: "Sideways", commentary: "Trading sideways; mediocre participation." },
-    { name: "Defence", status: "Fading", trend: "Down", commentary: "Losing luster; breadth thinning rapidly." },
-    { name: "Fertilizers & Agro Chemicals", status: "Avoid", trend: "Down", commentary: "Structurally weak; lacking a catalyst." },
-    { name: "Financial Services", status: "Fading", trend: "Decelerating", commentary: "Showing signs of exhaustion at higher levels." },
-    { name: "Healthcare Delivery", status: "Improving", trend: "Up", commentary: "Surge in short-term relative strength." },
-    { name: "HoldCo*", status: "Neutral", trend: "Steady", commentary: "Steady but uninspiring performance." },
-    { name: "Hotels", status: "Avoid", trend: "Broken", commentary: "Structurally broken; nearly zero participation." },
-    { name: "Housing Finance", status: "Fading", trend: "Down", commentary: "Significant momentum deceleration." },
-    { name: "Industrials", status: "Leader", trend: "Up", commentary: "Pillar of strength; healthy sustainable breadth." },
-    { name: "Infrastructure", status: "Weak", trend: "Down", commentary: "Languishing without clear price conviction." },
-    { name: "IT", status: "Avoid", trend: "Broken", commentary: "Deep relative underperformance persists." },
-    { name: "Logistics", status: "Weak", trend: "Down", commentary: "Erratic momentum; poor MA alignment." },
-    { name: "Media", status: "Neutral", trend: "Improving", commentary: "Attempting mean reversion; lacks follow-through." },
-    { name: "Metals & Mining", status: "Fading", trend: "Decelerating", commentary: "Stalling after significant outperformance." },
-    { name: "Online", status: "Avoid", trend: "Broken", commentary: "Structurally damaged; best avoided." },
-    { name: "Packaging", status: "Weak", trend: "Sideways", commentary: "Short-term bounce lacks technical conviction." },
-    { name: "Paper", status: "Neutral", trend: "Steady", commentary: "Neutral trend; limited participation." },
-    { name: "Pharma", status: "Steady", trend: "Up", commentary: "Steady but requires broader participation." },
-    { name: "Pipes", status: "Steady", trend: "Steady", commentary: "Resilient trend; momentum starting to flatten." },
-    { name: "Power", status: "Leader", trend: "Up", commentary: "Respectable strength; decent breadth." },
-    { name: "Railways", status: "Avoid", trend: "Broken", commentary: "Momentum completely evaporated." },
-    { name: "Realty", status: "Neutral", trend: "Sideways", commentary: "Lacking conviction of previous quarters." },
-    { name: "Retail", status: "Fading", trend: "Down", commentary: "Failed breakout; sharp deceleration." },
-    { name: "Sugar", status: "Neutral", trend: "Sideways", commentary: "Trapped in a range with no clear trend." },
-    { name: "Telecom", status: "Leader", trend: "Up", commentary: "Maintaining solid relative strength." },
-    { name: "Textile", status: "Fading", trend: "Down", commentary: "Recent surge finding heavy resistance." },
-  ];
-
-  const filteredSectors = sectors.filter(s => 
-    s.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'Leader': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case 'Improving': return 'bg-cyan-50 text-cyan-700 border-cyan-200';
-      case 'Steady': return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'Neutral': return 'bg-slate-50 text-slate-700 border-slate-200';
-      case 'Fading': return 'bg-orange-50 text-orange-700 border-orange-200';
-      case 'Weak': return 'bg-rose-50 text-rose-700 border-rose-200';
-      case 'Avoid': return 'bg-red-50 text-red-700 border-red-200';
-      default: return 'bg-gray-50 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getTrendIcon = (trend) => {
-    switch(trend) {
-      case 'Accelerating': return <Zap className="w-4 h-4 text-emerald-500" />;
-      case 'Up': return <TrendingUp className="w-4 h-4 text-emerald-500" />;
-      case 'Improving': return <ArrowUpRight className="w-4 h-4 text-cyan-500" />;
-      case 'Steady': return <Activity className="w-4 h-4 text-blue-500" />;
-      case 'Decelerating': return <TrendingDown className="w-4 h-4 text-orange-500" />;
-      case 'Broken': return <AlertOctagon className="w-4 h-4 text-red-500" />;
-      case 'Down': return <TrendingDown className="w-4 h-4 text-rose-500" />;
-      default: return <MinusCircle className="w-4 h-4 text-slate-400" />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 p-4 md:p-8 font-sans">
-      {/* Header */}
-      <header className="max-w-7xl mx-auto mb-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-800">Sectoral Pulse Dashboard</h1>
-            <p className="text-slate-500 flex items-center gap-2 mt-1">
-              <Clock className="w-4 h-4" /> Last Updated: {reportDate}
-            </p>
-          </div>
-          <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Market Context</span>
-            <p className="text-sm font-medium text-slate-700">Sharp Bifurcation: Leaders vs. Laggards</p>
-          </div>
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-slate-800">Sectoral Pulse Dashboard</h1>
+                <p class="text-slate-500 flex items-center gap-2 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Last Updated: 20 Feb 2026, 17:25
+                </p>
+            </div>
+            <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Market Context</span>
+                <p class="text-sm font-medium text-slate-700">Sharp Bifurcation: Leaders vs. Laggards</p>
+            </div>
         </div>
-      </header>
+    </header>
 
-      <main className="max-w-7xl mx-auto space-y-8">
+    <main class="max-w-7xl mx-auto space-y-8">
         
-        {/* Top Cards: Core Strategy */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
-            <div className="flex items-center gap-3 mb-4">
-              <ShieldCheck className="text-emerald-500 w-6 h-6" />
-              <h2 className="font-bold text-lg">Market Pillars</h2>
+        <!-- Top Cards: Core Strategy -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Market Pillars -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-emerald-500 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <svg class="text-emerald-500 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <h2 class="font-bold text-lg">Market Pillars</h2>
+                </div>
+                <p class="text-sm text-slate-600 mb-4 italic">Structural dominance with robust moving average breadth.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">Banks PSU</span>
+                    <span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">Automobiles</span>
+                    <span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">Industrials</span>
+                </div>
             </div>
-            <p className="text-sm text-slate-600 mb-4 italic">Structural dominance with robust moving average breadth.</p>
-            <div className="flex flex-wrap gap-2">
-              {['Banks PSU', 'Automobiles', 'Industrials'].map(tag => (
-                <span key={tag} className="px-2 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">{tag}</span>
-              ))}
-            </div>
-          </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-cyan-500 border border-slate-200">
-            <div className="flex items-center gap-3 mb-4">
-              <TrendingUp className="text-cyan-500 w-6 h-6" />
-              <h2 className="font-bold text-lg">Accelerating</h2>
+            <!-- Accelerating -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-cyan-500 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <svg class="text-cyan-500 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 10h9L7 22l2-10H1z"/></svg>
+                    <h2 class="font-bold text-lg">Accelerating</h2>
+                </div>
+                <p class="text-sm text-slate-600 mb-4 italic">Witnessing a surge in relative strength and momentum.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold rounded-lg">Healthcare Delivery</span>
+                    <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold rounded-lg">Banks PSU</span>
+                </div>
             </div>
-            <p className="text-sm text-slate-600 mb-4 italic">Witnessing a surge in relative strength and momentum.</p>
-            <div className="flex flex-wrap gap-2">
-              {['Healthcare Delivery', 'Banks PSU'].map(tag => (
-                <span key={tag} className="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs font-bold rounded-lg">{tag}</span>
-              ))}
-            </div>
-          </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-orange-500 border border-slate-200">
-            <div className="flex items-center gap-3 mb-4">
-              <TrendingDown className="text-orange-500 w-6 h-6" />
-              <h2 className="font-bold text-lg">Fading Leaders</h2>
+            <!-- Fading Leaders -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-orange-500 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <svg class="text-orange-500 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+                    <h2 class="font-bold text-lg">Fading Leaders</h2>
+                </div>
+                <p class="text-sm text-slate-600 mb-4 italic">Momentum deceleration suggests consolidation or mean reversion.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-bold rounded-lg">Metals & Mining</span>
+                    <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-bold rounded-lg">Financial Services</span>
+                </div>
             </div>
-            <p className="text-sm text-slate-600 mb-4 italic">Momentum deceleration suggests consolidation or mean reversion.</p>
-            <div className="flex flex-wrap gap-2">
-              {['Metals & Mining', 'Financial Services'].map(tag => (
-                <span key={tag} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-bold rounded-lg">{tag}</span>
-              ))}
-            </div>
-          </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-red-500 border border-slate-200">
-            <div className="flex items-center gap-3 mb-4">
-              <AlertOctagon className="text-red-500 w-6 h-6" />
-              <h2 className="font-bold text-lg">The Avoid List</h2>
+            <!-- Avoid List -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-l-red-500 border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <svg class="text-red-500 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <h2 class="font-bold text-lg">The Avoid List</h2>
+                </div>
+                <p class="text-sm text-slate-600 mb-4 italic">Structurally broken with abysmal breadth; no rising MAs.</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-lg">Hotels</span>
+                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-lg">Railways</span>
+                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-lg">IT</span>
+                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-lg">Online</span>
+                </div>
             </div>
-            <p className="text-sm text-slate-600 mb-4 italic">Structurally broken with abysmal breadth; no rising MAs.</p>
-            <div className="flex flex-wrap gap-2">
-              {['Hotels', 'Railways', 'IT', 'Online'].map(tag => (
-                <span key={tag} className="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-lg">{tag}</span>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* Detailed Analysis Section */}
-        <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <LayoutDashboard className="text-indigo-500 w-5 h-5" />
-              <h2 className="text-xl font-bold">Comprehensive Sector Matrix</h2>
+        <!-- Detailed Analysis Section -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <svg class="text-indigo-500 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    <h2 class="text-xl font-bold">Comprehensive Sector Matrix</h2>
+                </div>
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input 
+                        type="text" 
+                        id="sectorSearch"
+                        placeholder="Search sectors..." 
+                        class="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 w-full md:w-64"
+                    />
+                </div>
             </div>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <input 
-                type="text" 
-                placeholder="Search sectors..." 
-                className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 w-full md:w-64"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50/50">
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Sector Name</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trend</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Key Analysis</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredSectors.map((sector, index) => (
-                  <tr key={sector.name} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-slate-800">{sector.name}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${getStatusColor(sector.status)}`}>
-                        {sector.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm font-medium">
-                        {getTrendIcon(sector.trend)}
-                        {sector.trend}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-600 italic">
-                      {sector.commentary}
-                    </td>
-                  </tr>
-                ))}
-                {filteredSectors.length === 0 && (
-                  <tr>
-                    <td colSpan="4" className="px-6 py-12 text-center text-slate-400 italic">
-                      No sectors found matching your search.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse" id="sectorTable">
+                    <thead>
+                        <tr class="bg-slate-50/50">
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Sector Name</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Trend</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Key Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100" id="tableBody">
+                        <!-- Content injected by JavaScript -->
+                    </tbody>
+                </table>
+                <div id="noResults" class="hidden px-6 py-12 text-center text-slate-400 italic border-t border-slate-100">
+                    No sectors found matching your search.
+                </div>
+            </div>
         </section>
 
-        {/* Legend / Methodology Footer */}
-        <footer className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8 px-2 border-t border-slate-200">
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-800 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-indigo-500" />
-              Summary Methodology
-            </h3>
-            <ul className="text-sm text-slate-600 space-y-2">
-              <li>• <strong>Structural Pillars:</strong> High relative strength + robust moving average breadth.</li>
-              <li>• <strong>Fading:</strong> Thinning breadth and momentum deceleration over the last month.</li>
-              <li>• <strong>Avoid:</strong> Deep relative underperformance; stocks trading below rising averages.</li>
-            </ul>
-          </div>
-          <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm text-indigo-700">
-            <p className="font-semibold mb-2">Note for Swing Traders:</p>
-            <p>The market environment is highly selective. Prioritize "Pillars" for trend-following and "Accelerating" sectors for fresh swing entries. Avoid bottom-fishing in "Avoid" sectors until significant bases are formed.</p>
-          </div>
+        <!-- Legend / Methodology Footer -->
+        <footer class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8 px-2 border-t border-slate-200">
+            <div class="space-y-4">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    Summary Methodology
+                </h3>
+                <ul class="text-sm text-slate-600 space-y-2">
+                    <li>• <strong>Structural Pillars:</strong> High relative strength + robust moving average breadth.</li>
+                    <li>• <strong>Fading:</strong> Thinning breadth and momentum deceleration over the last month.</li>
+                    <li>• <strong>Avoid:</strong> Deep relative underperformance; stocks trading below rising averages.</li>
+                </ul>
+            </div>
+            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm text-indigo-700">
+                <p class="font-semibold mb-2">Note for Swing Traders:</p>
+                <p>The market environment is highly selective. Prioritize "Pillars" for trend-following and "Accelerating" sectors for fresh swing entries. Avoid bottom-fishing in "Avoid" sectors until significant bases are formed.</p>
+            </div>
         </footer>
-      </main>
-    </div>
-  );
-};
+    </main>
 
-export default App;
+    <script>
+        const sectors = [
+            { name: "Agriculture", status: "Neutral", trend: "Steady", commentary: "Inconsistent participation." },
+            { name: "Automobiles", status: "Leader", trend: "Up", commentary: "Solid structural dominance; broad-based participation." },
+            { name: "B. Mat*", status: "Avoid", trend: "Down", commentary: "Relative underperformance continues." },
+            { name: "Banks - PSU", status: "Leader", trend: "Accelerating", commentary: "Definitive market leader; massive surge." },
+            { name: "Banks - Pvt.", status: "Steady", trend: "Up", commentary: "Reliable trend but trailing PSU counterparts." },
+            { name: "Broking", status: "Weak", trend: "Down", commentary: "Struggling with weak internal breadth." },
+            { name: "Cement", status: "Fading", trend: "Decelerating", commentary: "Notable momentum deceleration." },
+            { name: "Chemicals", status: "Weak", trend: "Sideways", commentary: "Languishing in a low-conviction zone." },
+            { name: "Consumer Durables", status: "Neutral", trend: "Improving", commentary: "Finding footing; lacks breakout strength." },
+            { name: "Consumer Goods", status: "Neutral", trend: "Sideways", commentary: "Trading sideways; mediocre participation." },
+            { name: "Defence", status: "Fading", trend: "Down", commentary: "Losing luster; breadth thinning rapidly." },
+            { name: "Fertilizers & Agro Chemicals", status: "Avoid", trend: "Down", commentary: "Structurally weak; lacking a catalyst." },
+            { name: "Financial Services", status: "Fading", trend: "Decelerating", commentary: "Showing signs of exhaustion at higher levels." },
+            { name: "Healthcare Delivery", status: "Improving", trend: "Up", commentary: "Surge in short-term relative strength." },
+            { name: "HoldCo*", status: "Neutral", trend: "Steady", commentary: "Steady but uninspiring performance." },
+            { name: "Hotels", status: "Avoid", trend: "Broken", commentary: "Structurally broken; nearly zero participation." },
+            { name: "Housing Finance", status: "Fading", trend: "Down", commentary: "Significant momentum deceleration." },
+            { name: "Industrials", status: "Leader", trend: "Up", commentary: "Pillar of strength; healthy sustainable breadth." },
+            { name: "Infrastructure", status: "Weak", trend: "Down", commentary: "Languishing without clear price conviction." },
+            { name: "IT", status: "Avoid", trend: "Broken", commentary: "Deep relative underperformance persists." },
+            { name: "Logistics", status: "Weak", trend: "Down", commentary: "Erratic momentum; poor MA alignment." },
+            { name: "Media", status: "Neutral", trend: "Improving", commentary: "Attempting mean reversion; lacks follow-through." },
+            { name: "Metals & Mining", status: "Fading", trend: "Decelerating", commentary: "Stalling after significant outperformance." },
+            { name: "Online", status: "Avoid", trend: "Broken", commentary: "Structurally damaged; best avoided." },
+            { name: "Packaging", status: "Weak", trend: "Sideways", commentary: "Short-term bounce lacks technical conviction." },
+            { name: "Paper", status: "Neutral", trend: "Steady", commentary: "Neutral trend; limited participation." },
+            { name: "Pharma", status: "Steady", trend: "Up", commentary: "Steady but requires broader participation." },
+            { name: "Pipes", status: "Steady", trend: "Steady", commentary: "Resilient trend; momentum starting to flatten." },
+            { name: "Power", status: "Leader", trend: "Up", commentary: "Respectable strength; decent breadth." },
+            { name: "Railways", status: "Avoid", trend: "Broken", commentary: "Momentum completely evaporated." },
+            { name: "Realty", status: "Neutral", trend: "Sideways", commentary: "Lacking conviction of previous quarters." },
+            { name: "Retail", status: "Fading", trend: "Down", commentary: "Failed breakout; sharp deceleration." },
+            { name: "Sugar", status: "Neutral", trend: "Sideways", commentary: "Trapped in a range with no clear trend." },
+            { name: "Telecom", status: "Leader", trend: "Up", commentary: "Maintaining solid relative strength." },
+            { name: "Textile", status: "Fading", trend: "Down", commentary: "Recent surge finding heavy resistance." },
+        ];
+
+        function getStatusClasses(status) {
+            switch(status) {
+                case 'Leader': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                case 'Improving': return 'bg-cyan-50 text-cyan-700 border-cyan-200';
+                case 'Steady': return 'bg-blue-50 text-blue-700 border-blue-200';
+                case 'Neutral': return 'bg-slate-50 text-slate-700 border-slate-200';
+                case 'Fading': return 'bg-orange-50 text-orange-700 border-orange-200';
+                case 'Weak': return 'bg-rose-50 text-rose-700 border-rose-200';
+                case 'Avoid': return 'bg-red-50 text-red-700 border-red-200';
+                default: return 'bg-gray-50 text-gray-700 border-gray-200';
+            }
+        }
+
+        function getTrendIcon(trend) {
+            const icons = {
+                'Accelerating': `<svg class="w-4 h-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 10h9L7 22l2-10H1z"/></svg>`,
+                'Up': `<svg class="w-4 h-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+                'Improving': `<svg class="w-4 h-4 text-cyan-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 7 17 7 17 17"/><line x1="7" y1="17" x2="17" y2="7"/></svg>`,
+                'Steady': `<svg class="w-4 h-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+                'Decelerating': `<svg class="w-4 h-4 text-orange-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
+                'Broken': `<svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+                'Down': `<svg class="w-4 h-4 text-rose-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`
+            };
+            return icons[trend] || `<svg class="w-4 h-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`;
+        }
+
+        function renderTable(filterText = '') {
+            const tableBody = document.getElementById('tableBody');
+            const noResults = document.getElementById('noResults');
+            const filtered = sectors.filter(s => s.name.toLowerCase().includes(filterText.toLowerCase()));
+            
+            tableBody.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(sector => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-slate-50/50 transition-colors';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-semibold text-slate-800">${sector.name}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold border ${getStatusClasses(sector.status)}">
+                                ${sector.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2 text-sm font-medium">
+                                ${getTrendIcon(sector.trend)}
+                                ${sector.trend}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-600 italic">
+                            ${sector.commentary}
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        document.getElementById('sectorSearch').addEventListener('input', (e) => {
+            renderTable(e.target.value);
+        });
+
+        // Initial render
+        renderTable();
+    </script>
+</body>
+</html>
